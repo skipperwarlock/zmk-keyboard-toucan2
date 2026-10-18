@@ -10,54 +10,269 @@
 #define ADJ  3
 
 / {
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <1 2>;
-            then-layer = <3>;
+    behaviors {
+        bspc_tab: bspc_tab {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp BSPC>, <&kp TAB>;
+            mods = <(MOD_LALT|MOD_RALT|MOD_LCTL|MOD_RCTL)>;
+            keep-mods = <(MOD_LALT|MOD_RALT)>;
+        };
+
+        mt: mod_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        mt_fast: mod_tap_fast {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <150>;
+            quick-tap-ms = <100>;
+            require-prior-idle-ms = <0>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        bt0: bt0 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&bt0_sel>, <&bt0_clr>;
+        };
+
+        bt1: bt1 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&bt1_sel>, <&bt1_clr>;
+        };
+
+        bt2: bt2 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&bt2_sel>, <&bt2_clr>;
+        };
+
+        bt3: bt3 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&bt3_sel>, <&bt3_clr>;
+        };
+
+        td_shift_caps: td_shift_caps {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LSHFT>, <&kp CAPS>;
+        };
+
+        td_shift_gui: td_shift_gui {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LSHFT>, <&kp LGUI>;
+        };
+
+        td_nav: td_nav {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&mo 2>, <&to 2>;
+        };
+
+        td_num: td_num {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&mo 3>, <&to 3>;
+        };
+
+        sym_nav: sym_nav {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&nav_tap>;
+        };
+    };
+
+    macros {
+        nav_tap: nav_tap {
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            wait-ms = <0>;
+            tap-ms = <0>;
+            bindings = <&td_nav>;
+        };
+
+
+        bt0_sel: bt0_sel {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 0>;
+        };
+
+        bt0_clr: bt0_clr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 0>, <&bt BT_CLR>;
+        };
+
+        bt1_sel: bt1_sel {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 1>;
+        };
+
+        bt1_clr: bt1_clr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 1>, <&bt BT_CLR>;
+        };
+
+        bt2_sel: bt2_sel {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 2>;
+        };
+
+        bt2_clr: bt2_clr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 2>, <&bt BT_CLR>;
+        };
+
+        bt3_sel: bt3_sel {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 3>;
+        };
+
+        bt3_clr: bt3_clr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 3>, <&bt BT_CLR>;
+        };
+    };
+
+    // Combos use key-positions = 0-based slot index in each layer's bindings (same order as
+    // boards/shields/toucan/toucan.dtsi default_transform). BASE row 2: 14 S, 15 D, ... 19 J, 20 K, 21 L.
+    // Row 3: 24 caps, 25 Z, 26 X, 27 C, ...
+    combos {
+        compatible = "zmk,combos";
+
+//        combo_sd_tab {
+//            timeout-ms = <50>;
+//            key-positions = <14 15>;
+//            bindings = <&kp TAB>;
+//            layers = <0>;
+//        };
+
+//        combo_jk_fslh {
+//            timeout-ms = <50>;
+//            key-positions = <19 20>;
+//            bindings = <&kp FSLH>;
+//            layers = <0>;
+//        };
+
+//        combo_kl_bslh {
+//            timeout-ms = <50>;
+//            key-positions = <20 21>;
+//            bindings = <&kp BSLH>;
+//            layers = <0>;
+//        };
+
+        combo_xc_copy {
+            timeout-ms = <50>;
+            key-positions = <26 27>;
+            bindings = <&kp LC(C)>;
+            layers = <0>;
+        };
+
+        combo_cv_paste {
+            timeout-ms = <50>;
+            key-positions = <27 28>;
+            bindings = <&kp LC(V)>;
+            layers = <0>;
+        };
+
+        combo_xv_cut {
+            timeout-ms = <50>;
+            key-positions = <26 28>;
+            bindings = <&kp LC(X)>;
+            layers = <0>;
+        };
+
+        combo_ui_esc {
+            timeout-ms = <50>;
+            key-positions = <7 8>;
+            bindings = <&kp ESC>;
+            layers = <0>;
+        };
+
+        combo_pb_esc {
+            timeout-ms = <50>;
+            key-positions = <10 11>;
+            bindings = <&kp ESC>;
+            layers = <0>;
+        };
+
+        combo_gq_esc {
+            timeout-ms = <50>;
+            key-positions = <0 1>;
+            bindings = <&kp ESC>;
+            layers = <0>;
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        base {
+        layer_0 {
             display-name = "BASE";
             bindings = <
-                &kp TAB   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-                &kp LCTRL &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-                &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-                                &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &kp RALT
+                &kp GRAVE     &kp Q                  &kp W                  &kp E                  &kp R                  &mt DEL T                &mt PSCRN Y            &kp U                  &kp I                  &kp O                  &kp P                 &kp BSLH
+                &kp TAB                &mt LGUI A             &mt LALT S             &mt LSHFT D            &mt LCTRL F            &kp G                    &kp H                  &mt RCTRL J            &mt RSHFT K            &mt RALT L             &lt 1 SEMI            &kp SQT
+                &td_shift_caps         &kp Z                  &kp X                  &kp C                  &kp V                  &kp B                    &kp N                  &kp M                  &kp COMMA              &kp DOT                &kp FSLH              &kp RSHFT
+                &sym_nav 5 0           &td_num                &bspc_tab              &kp RET                &kp SPACE              &kp DEL
             >;
         };
 
-        nav {
+        layer_1 {
+            display-name = "DEV";
+            bindings = <
+                &trans                 &trans                 &trans                 &kp MINUS              &kp EQUAL              &kp LS(COMMA)            &kp LPAR               &kp LBKT               &kp UP                 &kp RBKT               &trans                 &trans
+                &trans                 &td_shift_gui          &mt LALT EXCL          &mt LSHFT LS(BSLH)     &mt LCTRL AMPS         &kp LS(DOT)              &kp RPAR               &kp LEFT               &kp DOWN               &kp RIGHT              &trans                 &trans
+                &trans                 &trans                 &trans                 &trans                 &trans                 &trans                   &trans                 &trans                 &trans                 &trans                 &trans                 &trans
+                &kp PG_UP              &mkp LCLK              &mkp RCLK              &kp HOME               &kp END                &kp PG_DN
+            >;
+        };
+
+        layer_2 {
             display-name = "NAV";
             bindings = <
-                &kp TAB     &kp N1          &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-                &bt BT_CLR  &bt BT_SEL 0    &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-                &kp LSHFT   &studio_unlock  &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                                                &kp LGUI     &trans       &kp SPACE      &kp RET  &trans   &kp RALT
+                &bt0                   &bt1                   &bt2                   &bt3                   &trans                 &bt BT_CLR               &kp PG_UP              &trans                 &trans                 &trans                 &trans                 &kp C_VOL_UP
+                &trans                 &trans                 &kp LALT               &kp LSHFT              &kp LCTRL              &trans                   &kp LEFT               &kp DOWN               &kp UP                 &kp RIGHT              &trans                 &kp C_VOL_DN
+                &to 3                  &studio_unlock         &trans                 &trans                 &trans                 &trans                   &kp PG_DN              &trans                 &trans                 &trans                 &trans                 &kp C_MUTE
+                &to 0                  &mkp LCLK              &mkp RCLK              &kp HOME               &kp END                &none
             >;
         };
 
-        sym {
-            display-name = "SYM";
+        layer_3 {
+            display-name = "NUM";
             bindings = <
-                &kp TAB   &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
-                &kp LCTRL &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
-                &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
-                                          &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
-            >;
-        };
-
-        adj {
-            display-name = "ADJ";
-            bindings = <
-                &mo TAB   &trans &kp F7 &kp F8 &kp F9 &kp F12   &kp C_VOL_DN &kp C_MUTE  &kp C_VOL_UP &trans &trans &kp BSPC
-                &kp LCTRL &trans &kp F4 &kp F5 &kp F6 &kp F11   &trans       &trans      &trans       &trans &trans &trans
-                &bt LSHFT &trans &kp F1 &kp F2 &kp F3 &kp F10   &trans       &trans      &trans       &trans &trans &trans
-                                   &kp LGUI &mo NAV &kp SPACE   &kp RET &mo 2 &kp RALT
+                &kp ESC                &none                 &kp F7                 &kp F8                 &kp F9                 &kp F10                  &none               &kp N7                 &kp N8                 &kp N9                 &kp STAR               &kp EQUAL
+                &kp TAB                &none                 &mt LALT F4            &mt LSHFT F5           &mt LCTRL F6           &kp F11                  &none               &mt RALT N4            &mt RSHFT N5           &mt RCTRL N6           &kp PLUS                &kp MINUS
+                &trans                 &none                 &kp F1                 &kp F2                 &kp F3                 &kp F12                  &none               &kp N1                 &kp N2                 &kp N3                 &kp DOT                &kp FSLH
+                &trans                 &to 0                  &trans                 &trans                 &trans                 &kp N0
             >;
         };
 
@@ -71,12 +286,14 @@
             >;
         };
 
-        extra_2 {
-                status = "reserved";
-        };
-
-        extra_3 {
-                status = "reserved";
+        layer_5 {
+            display-name = "SYM";
+            bindings = <
+                &trans                 &trans                 &trans                 &trans                 &trans                 &trans                   &kp GRAVE              &kp AMPS               &kp STAR               &kp LPAR               &kp RPAR                 &trans
+                &trans                 &trans                 &trans                 &trans                 &trans                 &trans                   &trans                 &kp DLLR               &kp PRCNT              &kp CARET              &trans                 &trans
+                &trans                 &trans                 &trans                 &trans                 &trans                 &trans                   &trans                 &kp EXCL               &kp AT                 &kp HASH               &trans                 &trans
+                &trans                 &trans                 &trans                   &trans                 &trans                 &trans
+            >;
         };
     };
 };
