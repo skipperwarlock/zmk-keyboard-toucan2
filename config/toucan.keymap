@@ -85,7 +85,14 @@
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
-            bindings = <&mo 3>, <&to 2>;
+            bindings = <&mo 3>, <&to 3>;
+        };
+
+        td_gui_nav: td_gui_nav {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LGUI>, <&to 2>;
         };
     };
 
@@ -218,7 +225,7 @@
                 &kp GRAVE     &kp Q                  &kp W                  &kp E                  &kp R                  &mt DEL T                &mt PSCRN Y            &kp U                  &kp I                  &kp O                  &kp P                 &kp BSLH
                 &kp TAB                &mt LGUI A             &mt LALT S             &mt LSHFT D            &mt LCTRL F            &kp G                    &kp H                  &mt RCTRL J            &mt RSHFT K            &mt RALT L             &lt 1 SEMI            &kp SQT
                 &td_shift_caps         &kp Z                  &kp X                  &kp C                  &kp V                  &kp B                    &kp N                  &kp M                  &kp COMMA              &kp DOT                &kp FSLH              &kp RSHFT
-                &mkp LCLK              &td_num                &bspc_tab              &kp RET                &kp SPACE              &kp DEL
+                &td_gui_nav            &td_num                &bspc_tab              &kp RET                &kp SPACE              &kp DEL
             >;
         };
 
