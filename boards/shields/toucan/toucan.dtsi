@@ -103,7 +103,7 @@
             event-code = <INPUT_REL_MISC>;
             sensitivity = <10>;
 #ifdef TOUCAN_WIN_MODE
-            bindings = <&kp LC(MINUS)>, <&kp LC(EQUAL)>;
+            bindings = <&kp LC(MINUS)>, <&kp LC(LS(EQUAL))>;
 #else
             bindings = <&kp LG(MINUS)>, <&kp LG(EQUAL)>;
 #endif
