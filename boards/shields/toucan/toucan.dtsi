@@ -143,7 +143,7 @@
 
     trackpad_listener: trackpad_listener {
         compatible = "zmk,input-listener";
-        status = "okay";
+        status = "disabled";
         device = <&trackpad_split>;
         input-processors = <&zip_xy_scaler 100 100>, <&zip_scroll_scaler 1 20>, <&zip_zoom_mapper>, <&is_touching_processor>, <&swipe_button_mapper>;
     };
