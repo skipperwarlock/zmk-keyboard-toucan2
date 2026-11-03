@@ -207,6 +207,8 @@ struct tps43_config {
     bool two_finger_tap;
     bool scroll;
     bool zoom;
+    bool three_finger_swipe;
+    int32_t three_finger_swipe_throttle_ms;
     bool swipes;            
     bool invert_x;
     bool invert_y;
@@ -269,6 +271,7 @@ struct tps43_drv_data {
     bool initialized;
     bool drag_active;
     bool suspended;         
+    int64_t next_three_finger_swipe_ms;
     bool touching;          
 };
 

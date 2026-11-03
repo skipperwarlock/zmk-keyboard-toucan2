@@ -129,6 +129,15 @@ properties:
     required: false
     description: Enable swipe processing. When enabled, tracks swipes as INPUT_BTN_NORTH/SOUTH/EAST/WEST.
 
+  three-finger-swipe:
+    type: boolean
+    description: Enable directional swipe events from three-finger movement.
+
+  three-finger-swipe-throttle-ms:
+    type: int
+    default: 1200
+    description: Minimum interval in milliseconds between three-finger swipe events.
+
   switch-xy:
     type: boolean
     required: false

@@ -459,11 +459,13 @@ static void tps43_work_handler(struct k_work *work) {
     }
 
     if (rel_x != 0 || rel_y != 0) {
-        // Handle three-finger swipes
-        if (config->swipes) {
-            if (num_fingers == 3) {
-                LOG_INF("Three-finger movement - checking for swipe");
+        // Keep three-finger gestures independent of single-finger swipes.
+        if ((config->three_finger_swipe || config->swipes) && num_fingers == 3) {
+            int64_t now = k_uptime_get();
+            if (now >= drv_data->next_three_finger_swipe_ms) {
                 tps43_handle_swipe(dev, rel_x, rel_y);
+                drv_data->next_three_finger_swipe_ms =
+                    now + MAX(0, config->three_finger_swipe_throttle_ms);
             }
         }
 
@@ -1433,6 +1435,8 @@ static int tps43_init(const struct device *dev) {
         .two_finger_tap = DT_INST_PROP(inst, two_finger_tap),                                        \
         .scroll = DT_INST_PROP(inst, scroll),                                                        \
         .zoom = DT_INST_PROP(inst, zoom),                                                            \
+        .three_finger_swipe = DT_INST_PROP(inst, three_finger_swipe),                        \
+        .three_finger_swipe_throttle_ms = DT_INST_PROP(inst, three_finger_swipe_throttle_ms), \
         .swipes = DT_INST_PROP(inst, swipes),                                                        \
         .invert_x = DT_INST_PROP(inst, invert_x),                                                    \
         .invert_y = DT_INST_PROP(inst, invert_y),                                                    \
