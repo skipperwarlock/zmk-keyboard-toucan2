@@ -277,7 +277,7 @@
                 &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
-                            &mkp MCLK &mkp LCLK &mkp RCLK           &mkp LCLK &mkp RCLK &mkp MCLK
+                            &to 0    &mkp LCLK &mkp RCLK           &mkp LCLK &mkp RCLK &mkp MCLK
             >;
         };
 
