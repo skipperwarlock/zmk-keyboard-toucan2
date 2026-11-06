@@ -198,7 +198,7 @@ static int tps43_i2c_write_reg8(const struct device *dev, uint16_t reg, uint8_t 
  static void tps43_rdy_callback(const struct device *dev, struct gpio_callback *cb, uint32_t pins) {
      struct tps43_drv_data *drv_data = CONTAINER_OF(cb, struct tps43_drv_data, rdy_cb);
  
-     k_work_submit(&drv_data->work);
+     k_work_submit_to_queue(&drv_data->work_queue, &drv_data->work);
  }
  
 
@@ -213,9 +213,9 @@ static void tps43_ready_watchdog(struct k_work *work) {
 
     if (!data->suspended && config->rdy_gpio.port &&
         gpio_pin_get_dt(&config->rdy_gpio) > 0) {
-        k_work_submit(&data->work);
+        k_work_submit_to_queue(&data->work_queue, &data->work);
     }
-    k_work_reschedule(&data->ready_watchdog, K_MSEC(100));
+    k_work_reschedule_for_queue(&data->work_queue, &data->ready_watchdog, K_MSEC(100));
 }
 
 /** Dump charging state */
@@ -399,9 +399,12 @@ static void tps43_work_handler(struct k_work *work) {
     uint8_t touch_data[(TPS43_REG_REL_Y + 2) - TPS43_REG_GESTURE_EVENTS_0];
     ret = read_sequence_registers(dev, TPS43_REG_GESTURE_EVENTS_0, touch_data,
                                   sizeof(touch_data));
+    // Release the device before input delivery can block on Bluetooth backpressure.
+    tps43_end_communication_window(dev);
+    k_sem_give(&drv_data->lock);
     if (ret < 0) {
         LOG_ERR("Touch data read error: %d", ret);
-        goto done;
+        return;
     }
 
     const uint8_t gestures_events[2] = {touch_data[0], touch_data[1]};
@@ -512,13 +515,8 @@ static void tps43_work_handler(struct k_work *work) {
         }
     }
 
-done:
     // Save for next call
     drv_data->drag_active = is_drag_active;
-    tps43_end_communication_window(dev);
-    
-    // Release semaphore after completing all I2C operations
-    k_sem_give(&drv_data->lock);
 }
 
 /**
@@ -1387,6 +1385,12 @@ static int tps43_init(const struct device *dev) {
     // Finish register access before interrupts can schedule the read handler.
     tps43_dump_registers(dev);
 
+    // Input delivery may block. Never run it on the shared system work queue,
+    // which Bluetooth and keyboard processing need to keep making progress.
+    k_work_queue_start(&drv_data->work_queue, drv_data->work_stack,
+                       K_KERNEL_STACK_SIZEOF(drv_data->work_stack),
+                       K_PRIO_PREEMPT(10), NULL);
+
     // configure RDY interrupts only AFTER device configuration!
     if (config->rdy_gpio.port != NULL) {
         ret = gpio_pin_configure_dt(&config->rdy_gpio, GPIO_INPUT);
@@ -1411,7 +1415,7 @@ static int tps43_init(const struct device *dev) {
     drv_data->initialized = true;
     drv_data->suspended = false;
 
-    k_work_reschedule(&drv_data->ready_watchdog, K_MSEC(100));
+    k_work_reschedule_for_queue(&drv_data->work_queue, &drv_data->ready_watchdog, K_MSEC(100));
     
     LOG_INF("TPS43 driver successfully initialized");
     return 0;

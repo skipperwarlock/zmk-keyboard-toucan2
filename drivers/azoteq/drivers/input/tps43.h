@@ -264,6 +264,8 @@ struct tps43_drv_data {
     const struct device *dev;
     struct k_sem lock;
     struct gpio_callback rdy_cb;
+    struct k_work_q work_queue;
+    K_KERNEL_STACK_MEMBER(work_stack, 2048);
     struct k_work work;
     struct k_work_delayable ready_watchdog;
 
