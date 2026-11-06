@@ -164,6 +164,14 @@
     combos {
         compatible = "zmk,combos";
 
+        // Press both home-row Shift keys (D + K) to enable Caps Word.
+        combo_dk_caps_word {
+            timeout-ms = <50>;
+            key-positions = <15 20>;
+            bindings = <&caps_word>;
+            layers = <BASE>;
+        };
+
 //        combo_sd_tab {
 //            timeout-ms = <50>;
 //            key-positions = <14 15>;
