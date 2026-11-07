@@ -101,6 +101,13 @@
             bindings = <&mo 3>, <&to 3>;
         };
 
+        sk_quick: sticky_key_quick_release {
+            compatible = "zmk,behavior-sticky-key";
+            #binding-cells = <1>;
+            bindings = <&kp>;
+            quick-release;
+        };
+
         mt_gui_sk: mod_tap_gui_sticky_shift {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -108,7 +115,7 @@
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <0>;
-            bindings = <&kp>, <&sk>;
+            bindings = <&kp>, <&sk_quick>;
         };
     };
 
@@ -160,6 +167,18 @@
             #binding-cells = <0>;
             bindings = <&bt BT_SEL 3>, <&bt BT_CLR>;
         };
+
+        d_space: d_space {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp D>, <&kp SPACE>;
+        };
+
+        k_space: k_space {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp K>, <&kp SPACE>;
+        };
     };
 
     // Combos use key-positions = 0-based slot index in each layer's bindings (same order as
@@ -173,6 +192,20 @@
             timeout-ms = <50>;
             key-positions = <15 20>;
             bindings = <&caps_word>;
+            layers = <BASE>;
+        };
+
+        combo_d_space {
+            timeout-ms = <50>;
+            key-positions = <15 40>;
+            bindings = <&d_space>;
+            layers = <BASE>;
+        };
+
+        combo_k_space {
+            timeout-ms = <50>;
+            key-positions = <20 40>;
+            bindings = <&k_space>;
             layers = <BASE>;
         };
 
