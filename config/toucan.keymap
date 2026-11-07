@@ -101,11 +101,14 @@
             bindings = <&mo 3>, <&to 3>;
         };
 
-        td_gui_nav: td_gui_nav {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp LGUI>, <&to 2>;
+        mt_gui_sk: mod_tap_gui_sticky_shift {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <0>;
+            bindings = <&kp>, <&sk>;
         };
     };
 
@@ -246,7 +249,7 @@
                 &kp GRAVE     &kp Q                  &kp W                  &kp E                  &kp R                  &mt DEL T                &mt PSCRN Y            &kp U                  &kp I                  &kp O                  &kp P                 &kp BSLH
                 &kp TAB                &kp A                  &mt LALT S             &mt_pos LSHFT D        &mt LCTRL F            &kp G                    &kp H                  &mt RCTRL J            &mt_pos RSHFT K        &mt RALT L             &lt 1 SEMI            &kp SQT
                 &td_shift_caps         &kp Z                  &kp X                  &kp C                  &kp V                  &kp B                    &kp N                  &kp M                  &kp COMMA              &kp DOT                &kp FSLH              &kp RSHFT
-                &td_gui_nav            &td_num                &bspc_tab              &kp RET                &kp SPACE              &kp DEL
+                &mt_gui_sk LGUI LSHFT  &td_num                &bspc_tab              &kp RET                &kp SPACE              &kp DEL
             >;
         };
 
