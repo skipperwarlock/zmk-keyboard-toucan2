@@ -204,14 +204,14 @@
         };
 
         combo_d_space {
-            timeout-ms = <50>;
+            timeout-ms = <280>;
             key-positions = <15 40>;
             bindings = <&d_space>;
             layers = <BASE>;
         };
 
         combo_k_space {
-            timeout-ms = <50>;
+            timeout-ms = <280>;
             key-positions = <20 40>;
             bindings = <&k_space>;
             layers = <BASE>;
