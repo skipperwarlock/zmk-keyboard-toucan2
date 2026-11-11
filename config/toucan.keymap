@@ -217,6 +217,28 @@
             layers = <BASE>;
         };
 
+        combo_we_slash {
+            timeout-ms = <50>;
+            key-positions = <2 3>;
+            bindings = <&kp FSLH>;
+            layers = <BASE>;
+        };
+
+        combo_er_backslash {
+            timeout-ms = <50>;
+            key-positions = <3 4>;
+            bindings = <&kp BSLH>;
+            layers = <BASE>;
+        };
+
+        // Hold I and O together to enable the mouse movement layer.
+        combo_io_mouse {
+            timeout-ms = <50>;
+            key-positions = <8 9>;
+            bindings = <&mo 4>;
+            layers = <BASE>;
+        };
+
 //        combo_sd_tab {
 //            timeout-ms = <50>;
 //            key-positions = <14 15>;
@@ -266,19 +288,6 @@
             layers = <0>;
         };
 
-        combo_pb_esc {
-            timeout-ms = <50>;
-            key-positions = <10 11>;
-            bindings = <&kp ESC>;
-            layers = <0>;
-        };
-
-        combo_gq_esc {
-            timeout-ms = <50>;
-            key-positions = <0 1>;
-            bindings = <&kp ESC>;
-            layers = <0>;
-        };
     };
 
     keymap {
@@ -300,7 +309,7 @@
                 &trans                 &trans                 &kp GRAVE              &kp MINUS              &kp EQUAL              &kp LS(COMMA)            &kp LPAR               &kp LBKT               &kp UP                 &kp RBKT               &trans                 &trans
                 &trans                 &td_shift_gui          &mt LALT EXCL          &mt LSHFT LS(BSLH)     &mt LCTRL AMPS         &kp LS(DOT)              &kp RPAR               &kp LEFT               &kp DOWN               &kp RIGHT              &trans                 &trans
                 &trans                 &trans                 &trans                 &trans                 &trans                 &trans                   &trans                 &trans                 &trans                 &trans                 &trans                 &trans
-                &kp PG_UP              &mkp LCLK              &mkp RCLK              &kp HOME               &kp END                &kp PG_DN
+                &kp PG_UP              &kp FSLH               &kp BSLH               &kp HOME               &kp END                &kp PG_DN
             >;
         };
 
@@ -327,8 +336,8 @@
         mouse {
             display-name = "MOU";
             bindings = <
-                &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
-                &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
+                &trans &trans &trans &mmv MOVE_UP &trans &trans     &trans &trans &trans &trans &trans &trans
+                &trans &trans &mmv MOVE_LEFT &mmv MOVE_DOWN &mmv MOVE_RIGHT &trans &trans &trans &trans &trans &trans &trans
                 &trans &trans &trans &trans &trans &trans           &trans &trans &trans &trans &trans &trans
                             &to 0    &mkp LCLK &mkp RCLK           &mkp LCLK &mkp RCLK &mkp MCLK
             >;
